@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Transaction {
-    private Integer id;
+    private String id;
     private LocalDateTime date;
     private Long amount;
-    private Integer state;
+    private TransactionState state;
 }

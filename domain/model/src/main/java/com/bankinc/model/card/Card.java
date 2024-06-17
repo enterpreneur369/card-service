@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Card {
-    private Integer id;
+    private Integer number;
+    private String id;
     private LocalDateTime dueDate;
     private CardState state;
     private Long balance;
