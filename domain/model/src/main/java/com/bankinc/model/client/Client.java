@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Client {
+
     private Integer id;
     private String name;
     private String surname;

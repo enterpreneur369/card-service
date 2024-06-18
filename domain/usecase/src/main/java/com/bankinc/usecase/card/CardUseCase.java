@@ -8,16 +8,13 @@ import lombok.RequiredArgsConstructor;
 public class CardUseCase {
 
     private final CardRepository repository;
-    private final CardOperations operations;
 
     public Card generateCardNumber(String idProduct) {
-        return operations.generateCardNumber(idProduct);
+        return Card.builder().build();
     }
-
     public Card lockCard(String cardId) {
-        return operations.lockCard(cardId);
+        return Card.builder().build();
     }
-
     public Card getCardByNumber(Integer number) {
         return repository.getCardByNumber(number);
     }

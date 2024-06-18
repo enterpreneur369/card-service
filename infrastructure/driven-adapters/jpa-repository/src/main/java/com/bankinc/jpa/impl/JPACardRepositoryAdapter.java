@@ -2,16 +2,17 @@ package com.bankinc.jpa.impl;
 
 import com.bankinc.jpa.helper.AdapterOperations;
 import com.bankinc.jpa.model.CardEntity;
+import com.bankinc.jpa.model.ClientEntity;
 import com.bankinc.jpa.repo.JPACardRepository;
 import com.bankinc.model.card.Card;
-import com.bankinc.model.card.gateways.CardOperations;
 import com.bankinc.model.card.gateways.CardRepository;
+import com.bankinc.model.client.Client;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class JPACardRepositoryAdapter extends AdapterOperations<Card, CardEntity, Integer, JPACardRepository>
- implements CardRepository, CardOperations
+ implements CardRepository
 {
 
     public JPACardRepositoryAdapter(JPACardRepository repository, ObjectMapper mapper) {
@@ -25,26 +26,27 @@ public class JPACardRepositoryAdapter extends AdapterOperations<Card, CardEntity
 
     @Override
     public Card getCardByNumber(Integer number) {
-        return new Card();
+        return repository.findById(number).map(cardEntity -> mapper.map(cardEntity, Card.class))
+                .orElse(Card.builder().build());
     }
 
     @Override
     public Card updateCard(Card card) {
-        return new Card();
+        CardEntity clientEntity = mapper.map(card, CardEntity.class);
+        CardEntity savedEntity = repository.save(clientEntity);
+        return mapper.map(savedEntity, Card.class);
+    }
+
+    @Override
+    public Card saveCard(Card card) {
+        card.setId(null);
+        CardEntity cardEntity = mapper.map(card, CardEntity.class);
+        CardEntity savedEntity = repository.save(cardEntity);
+        return mapper.map(savedEntity, Card.class);
     }
 
     @Override
     public Card getCardById(String id) {
-        return new Card();
-    }
-
-    @Override
-    public Card generateCardNumber(String idProduct) {
-        return new Card();
-    }
-
-    @Override
-    public Card lockCard(String cardId) {
         return new Card();
     }
 }

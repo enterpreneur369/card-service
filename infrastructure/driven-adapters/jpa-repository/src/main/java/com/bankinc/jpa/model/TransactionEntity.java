@@ -4,9 +4,15 @@ import com.bankinc.model.card.CardState;
 import com.bankinc.model.transaction.TransactionState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +25,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "transactions")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TransactionEntity {
 
@@ -29,7 +36,11 @@ public class TransactionEntity {
             strategy = "com.bankinc.jpa.util.UUIDGenerator"
     )
     private String id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id", nullable = false)
+    private CardEntity card;
     private LocalDateTime date;
+    @Column(nullable = false)
     private Long amount;
     private TransactionState state;
 }
