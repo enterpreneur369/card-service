@@ -7,6 +7,7 @@ import com.bankinc.model.dto.CardDTO;
 import com.bankinc.model.dto.TransactionDTO;
 import com.bankinc.model.exception.TransactionNotFoundException;
 import com.bankinc.model.transaction.Transaction;
+import com.bankinc.model.transaction.TransactionState;
 import com.bankinc.model.transaction.gateways.TransactionRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
@@ -63,6 +64,36 @@ public class JPATransactionRepositoryAdapter extends AdapterOperations<Transacti
                 .build(), TransactionEntity.class);
         TransactionEntity savedEntity = repository.save(transactionEntity);
         return mapper.map(savedEntity, Transaction.class);
+    }
+
+    @Override
+    public TransactionDTO updateTransaction(Transaction transaction) {
+        TransactionEntity transactionEntity = mapper.map(Transaction
+                .builder()
+                .id(transaction.getId())
+                .card(transaction.getCard())
+                .date(transaction.getDate())
+                .state(transaction.getState())
+                .amount(transaction.getAmount())
+                .build(), TransactionEntity.class);
+        TransactionEntity savedEntity = repository.save(transactionEntity);
+        return TransactionDTO
+                .builder()
+                .id(savedEntity.getId())
+                .card(CardDTO
+                        .builder()
+                        .id(savedEntity.getCard().getId())
+                        .number(savedEntity.getCard().getNumber())
+                        .currency(savedEntity.getCard().getCurrency())
+                        .balance(savedEntity.getCard().getBalance())
+                        .clientName(savedEntity.getCard().getClient()
+                                .getName().concat(" ")
+                                .concat(savedEntity.getCard().getClient().getSurname()))
+                        .build())
+                .date(savedEntity.getDate())
+                .amount(savedEntity.getAmount())
+                .state(savedEntity.getState())
+                .build();
     }
 
 }

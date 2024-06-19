@@ -11,6 +11,8 @@ import com.bankinc.model.exception.CardWithProductNorValidException;
 import com.bankinc.model.exception.CustomErrorRecord;
 import com.bankinc.model.exception.GeneralFailException;
 import com.bankinc.model.exception.InsufficientErrorException;
+import com.bankinc.model.exception.TransactionAlreadyAnulatedException;
+import com.bankinc.model.exception.TransactionAnulationTimeExceededException;
 import com.bankinc.model.exception.TransactionNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +96,20 @@ public class ResponseExceptionHanlder {
 
     @ExceptionHandler(TransactionNotFoundException.class)
     public ResponseEntity<CustomErrorRecord> handleTransactionNotFoundException(TransactionNotFoundException ex, WebRequest request) {
+        CustomErrorRecord err = new CustomErrorRecord(LocalDateTime.now(), ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(TransactionAlreadyAnulatedException.class)
+    public ResponseEntity<CustomErrorRecord> handleTransactionAlreadyAnulatedException(TransactionAlreadyAnulatedException ex, WebRequest request) {
+        CustomErrorRecord err = new CustomErrorRecord(LocalDateTime.now(), ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(TransactionAnulationTimeExceededException.class)
+    public ResponseEntity<CustomErrorRecord> handleTransactionAnulationTimeExceededException(TransactionAnulationTimeExceededException ex, WebRequest request) {
         CustomErrorRecord err = new CustomErrorRecord(LocalDateTime.now(), ex.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
