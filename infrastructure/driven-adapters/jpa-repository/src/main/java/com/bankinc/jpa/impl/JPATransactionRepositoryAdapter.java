@@ -1,19 +1,17 @@
 package com.bankinc.jpa.impl;
 
 import com.bankinc.jpa.helper.AdapterOperations;
-import com.bankinc.jpa.model.CardEntity;
-import com.bankinc.jpa.model.ClientEntity;
 import com.bankinc.jpa.model.TransactionEntity;
-import com.bankinc.jpa.repo.JPACardRepository;
 import com.bankinc.jpa.repo.JPATransactionRepository;
-import com.bankinc.model.card.Card;
-import com.bankinc.model.card.gateways.CardOperations;
-import com.bankinc.model.card.gateways.CardRepository;
-import com.bankinc.model.client.Client;
+import com.bankinc.model.dto.CardDTO;
+import com.bankinc.model.dto.TransactionDTO;
+import com.bankinc.model.exception.TransactionNotFoundException;
 import com.bankinc.model.transaction.Transaction;
 import com.bankinc.model.transaction.gateways.TransactionRepository;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public class JPATransactionRepositoryAdapter extends AdapterOperations<Transaction, TransactionEntity, String,
@@ -31,19 +29,40 @@ public class JPATransactionRepositoryAdapter extends AdapterOperations<Transacti
     }
 
     @Override
-    public Transaction getTransactionById(String id) {
-        return repository.findById(id).map(clientEntity -> mapper.map(clientEntity, Transaction.class))
-                .orElse(Transaction.builder().build());
+    public TransactionDTO getTransactionById(String id) {
+        return repository.findById(id)
+                .map(transactionEntity -> TransactionDTO.builder()
+                        .id(transactionEntity.getId())
+                        .amount(transactionEntity.getAmount())
+                        .date(transactionEntity.getDate())
+                        .state(transactionEntity.getState())
+                        .card(CardDTO.builder()
+                                .id(transactionEntity.getCard().getId())
+                                .balance(transactionEntity.getCard().getBalance())
+                                .clientName(transactionEntity.getCard().getClient().getName()
+                                        .concat(" ")
+                                        .concat(transactionEntity.getCard().getClient().getSurname()))
+                                .currency(transactionEntity.getCard().getCurrency())
+                                .number(transactionEntity.getCard().getNumber())
+                                .build())
+                        .build())
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction not found for id: " + id));
     }
 
-    @Override
-    public Transaction createTransaction(String cardId, Long price) {
 
+
+    @Override
+    public Transaction createTransaction(Transaction transaction) {
         TransactionEntity transactionEntity = mapper.map(Transaction
                 .builder()
-                .amount(price)
+                        .id(null)
+                        .card(transaction.getCard())
+                        .date(transaction.getDate())
+                        .state(transaction.getState())
+                        .amount(transaction.getAmount())
                 .build(), TransactionEntity.class);
         TransactionEntity savedEntity = repository.save(transactionEntity);
         return mapper.map(savedEntity, Transaction.class);
     }
+
 }

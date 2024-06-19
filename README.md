@@ -1,4 +1,4 @@
-# Proyecto Base Implementando Clean Architecture
+# Servicio Card de Bank Inc
 
 ## Antes de Iniciar
 
@@ -36,12 +36,46 @@ Los driven adapter representan implementaciones externas a nuestro sistema, como
 soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
 interactuar.
 
+#### JPACardRepository
+Repositorio para obtener la data de la tabla cards
+
+#### JPAClientRepository
+Repositorio para obtener la data de la tabla clients
+
+#### JPATransactionRepository
+Repositorio para obtener la data de la tabla transactions
+
 ### Entry Points
 
 Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
+
+#### ApiRest
+Es el entry point para las distintas operaciones con las tarjetas, en esta podemos realizar las siguientes 
+ funcionalidades:
+
+* Generar número de tarjeta
+* Activar tarjeta
+* Bloquear tarjeta
+* Recarcar saldo
+* Consulta de saldo
+* Transacción de compra
+* Consultar transacción
 
 ## Application
 
 Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+
+
+## ¿Cómo probar la aplicación en local?
+
+1. Para poder probar la aplicación en local, es necesario
+tener una base de datos postgresql y es necesario
+configurar el ide con estas variables de entorno
+
+* DATABASE_USER = La que corresponde a su base de datos local
+* DATABASE_PASSWORD = La que corresponde a su base de datos local
+* DATABASE_NAME = La que corresponde a su base de datos local
+
+2. Se arranca el proyecto normalmente

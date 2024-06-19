@@ -2,11 +2,9 @@ package com.bankinc.jpa.impl;
 
 import com.bankinc.jpa.helper.AdapterOperations;
 import com.bankinc.jpa.model.CardEntity;
-import com.bankinc.jpa.model.ClientEntity;
 import com.bankinc.jpa.repo.JPACardRepository;
 import com.bankinc.model.card.Card;
 import com.bankinc.model.card.gateways.CardRepository;
-import com.bankinc.model.client.Client;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
@@ -25,8 +23,8 @@ public class JPACardRepositoryAdapter extends AdapterOperations<Card, CardEntity
     }
 
     @Override
-    public Card getCardByNumber(Integer number) {
-        return repository.findById(number).map(cardEntity -> mapper.map(cardEntity, Card.class))
+    public Card getCardByNumber(String number) {
+        return repository.findByNumber(number).map(cardEntity -> mapper.map(cardEntity, Card.class))
                 .orElse(Card.builder().build());
     }
 
@@ -46,7 +44,8 @@ public class JPACardRepositoryAdapter extends AdapterOperations<Card, CardEntity
     }
 
     @Override
-    public Card getCardById(String id) {
-        return new Card();
+    public Card getCardById(Integer id) {
+        return repository.findById(id).map(cardEntity -> mapper.map(cardEntity, Card.class))
+                .orElse(Card.builder().build());
     }
 }

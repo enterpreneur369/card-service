@@ -3,8 +3,8 @@ package com.bankinc.model.card.gateways;
 import com.bankinc.model.card.Card;
 
 public interface CardRepository {
-    Card getCardByNumber(Integer number);
+    Card getCardByNumber(String number);
     Card updateCard(Card card);
     Card saveCard(Card card);
-    Card getCardById(String id);
+    Card getCardById(Integer id);
 }

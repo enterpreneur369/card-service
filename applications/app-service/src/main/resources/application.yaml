@@ -12,21 +12,32 @@ spring:
   profiles:
     include: null
   datasource:
-    url: "jdbc:postgresql:cardservice"
-    username: "postgres"
-    password: "postgres"
+    url: "jdbc:postgresql:${DATABASE_NAME}"
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     driverClassName: "org.postgresql.Driver"
   jpa:
     databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
   adapters:
     postgres:
-      database: "cardservice"
+      database: ${DATABASE_NAME}
       host: "localhost"
       port: 5432
-      username: "postgres"
-      password: "postgres"
+      username: ${DATABASE_USER}
+      password: ${DATABASE_PASSWORD}
       schema: "schema"
       pool:
         initial-size: 12
         max-size: 15
         max-idle-time: 10
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"

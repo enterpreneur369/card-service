@@ -1,7 +1,8 @@
-package com.bankinc.model.transaction;
-import com.bankinc.model.card.Card;
-import lombok.Builder;
+package com.bankinc.model.dto;
+
+import com.bankinc.model.transaction.TransactionState;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Transaction {
+public class TransactionDTO {
     private String id;
-    private Card card;
+    private CardDTO card;
     private LocalDateTime date;
     private Long amount;
     private TransactionState state;

@@ -1,7 +1,6 @@
 package com.bankinc.jpa.model;
 
 import com.bankinc.model.card.CardState;
-import com.bankinc.model.client.Client;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

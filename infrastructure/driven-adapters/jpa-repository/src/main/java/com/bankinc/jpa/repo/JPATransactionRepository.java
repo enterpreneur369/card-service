@@ -1,6 +1,5 @@
 package com.bankinc.jpa.repo;
 
-import com.bankinc.jpa.model.CardEntity;
 import com.bankinc.jpa.model.TransactionEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;

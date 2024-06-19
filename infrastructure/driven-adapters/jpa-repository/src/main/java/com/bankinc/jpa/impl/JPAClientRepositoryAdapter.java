@@ -1,13 +1,8 @@
 package com.bankinc.jpa.impl;
 
 import com.bankinc.jpa.helper.AdapterOperations;
-import com.bankinc.jpa.model.CardEntity;
 import com.bankinc.jpa.model.ClientEntity;
-import com.bankinc.jpa.repo.JPACardRepository;
 import com.bankinc.jpa.repo.JPAClientRepository;
-import com.bankinc.model.card.Card;
-import com.bankinc.model.card.gateways.CardOperations;
-import com.bankinc.model.card.gateways.CardRepository;
 import com.bankinc.model.client.Client;
 import com.bankinc.model.client.gateways.ClientRepository;
 import org.reactivecommons.utils.ObjectMapper;
