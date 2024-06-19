@@ -78,4 +78,59 @@ configurar el ide con estas variables de entorno
 * DATABASE_PASSWORD = La que corresponde a su base de datos local
 * DATABASE_NAME = La que corresponde a su base de datos local
 
-2. Se arranca el proyecto normalmente
+2. Se genera la data de prueba inicial con clientes y tarjetas sin activar.
+Para ello es necesario reemplazar el main por este código cuando ya haya data poblada para las pruebas 
+se puede dejar como estaba antes.
+
+~~~
+import com.bankinc.model.card.Card;
+import com.bankinc.model.card.CardState;
+import com.bankinc.model.card.gateways.CardRepository;
+import com.bankinc.model.client.Client;
+import com.bankinc.model.client.gateways.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.time.LocalDateTime;
+
+@SpringBootApplication
+public class MainApplication implements CommandLineRunner {
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @Autowired
+    private CardRepository cardRepository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(MainApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        // Crear clientes
+        Client client1 = new Client(null, "John", "Doe");
+        Client client2 = new Client(null, "Jane", "Smith");
+        Client client3 = new Client(null, "Bob", "Brown");
+
+        // Guardar los clientes y obtener las instancias persistidas
+        Client savedClient1 = clientRepository.saveClient(client1);
+        Client savedClient2 = clientRepository.saveClient(client2);
+        Client savedClient3 = clientRepository.saveClient(client3);
+
+        // Crear tarjetas usando las instancias de clientes guardadas
+        Card card1 = new Card(null, null, savedClient1, LocalDateTime.now().plusYears(3), CardState.INACTIVE, 0L, "USD", null);
+        Card card2 = new Card(null, null, savedClient2, LocalDateTime.now().plusYears(3), CardState.INACTIVE, 0L, "USD", null);
+        Card card3 = new Card(null, null, savedClient3, LocalDateTime.now().plusYears(3), CardState.INACTIVE, 0L, "USD", null);
+
+        // Guardar las tarjetas
+        cardRepository.saveCard(card1);
+        cardRepository.saveCard(card2);
+        cardRepository.saveCard(card3);
+    }
+}
+~~~
+
+3. Se procede a iniciar el proyecto
