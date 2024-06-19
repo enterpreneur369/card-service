@@ -89,6 +89,8 @@ public class CardUseCase {
             }
             cardToUpdateBalance.setBalance(cardToUpdateBalance.getBalance() + amount);
             return cardToUpdateBalance;
+        } catch(InsufficientErrorException ex){
+            throw new InsufficientErrorException(ex.getMessage());
         } catch (NumberFormatException e) {
             throw new CardNotValidBalanceException("Invalid balance amount: " + balance);
         } catch (Exception e) {

@@ -10,6 +10,7 @@ import com.bankinc.model.transaction.Transaction;
 import com.bankinc.model.transaction.TransactionState;
 import com.bankinc.usecase.card.CardUseCase;
 import com.bankinc.usecase.transaction.TransactionUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +30,8 @@ import static com.bankinc.model.constants.Constants.BALANCE_RELOADED_SUCCESS;
 import static com.bankinc.model.constants.Constants.CARD_LOCKED_SUCCESS;
 import static com.bankinc.model.constants.Constants.CARD_NOT_FOUND;
 
+
+@Tag(name = "Card Entry Point", description = "Api para administrar las tarjetas")
 @RestController
 @RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
